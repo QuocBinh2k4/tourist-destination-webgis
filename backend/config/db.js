@@ -12,3 +12,20 @@ const pool = new Pool({
 });
 
 module.exports = pool;
+
+// Hàm kiểm tra kết nối
+async function testConnection() {
+  const result = await pool.query(`
+    SELECT
+      current_database() AS database_name,
+      PostGIS_Version() AS postgis_version
+  `);
+
+  console.log("Kết nối PostgreSQL thành công!");
+  console.log(result.rows[0]);
+}
+
+module.exports = {
+  pool,
+  testConnection
+};

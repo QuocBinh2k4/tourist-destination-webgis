@@ -1,8 +1,26 @@
+
+# Node.js
 node_modules/
-frontend/dist/
-backend/.env
-frontend/.env
-frontend/.env.local
+npm-debug.log*
 *.log
-.DS_Store
+
+# Build frontend
+frontend/dist/
+frontend/.vite/
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.production.local
+
+# Visual Studio Code
 .vscode/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
