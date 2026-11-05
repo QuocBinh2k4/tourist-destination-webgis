@@ -1,122 +1,167 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+import { useCallback, useEffect, useState } from "react";
+
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
+import Dashboard from "./pages/Dashboard";
+import ModulePlaceholder from "./pages/ModulePlaceholder";
+
+import {
+  getDiemDuLich,
+  getLoaiHinh,
+  checkHealth
+} from "./api/client";
+
+// Thông tin các trang
+const pageInfo = {
+  dashboard: {
+    title: "Tổng quan",
+    subtitle: "Bảng điều khiển hệ thống TourismGIS"
+  },
+  destinations: {
+    title: "Quản lý điểm du lịch",
+    subtitle: "Quản lý thông tin và vị trí điểm du lịch"
+  },
+  categories: {
+    title: "Loại hình du lịch",
+    subtitle: "Danh mục phân loại điểm du lịch"
+  },
+  services: {
+    title: "Cơ sở dịch vụ",
+    subtitle: "Quản lý các cơ sở phục vụ du lịch"
+  },
+  map: {
+    title: "Bản đồ WebGIS",
+    subtitle: "Trực quan hóa dữ liệu không gian"
+  },
+  analysis: {
+    title: "Phân tích không gian",
+    subtitle: "Phân tích vùng đệm và khả năng tiếp cận"
+  }
+};
+
+export default function App() {
+  const [activePage, setActivePage] = useState("dashboard");
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const [destinations, setDestinations] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  const [search, setSearch] = useState("");
+  const [connected, setConnected] = useState(false);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Hàm tải dữ liệu từ Backend
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      // Kiểm tra kết nối Backend
+      const health = await checkHealth();
+
+      if (!health.success) {
+        throw new Error("Không kết nối được Backend");
+      }
+
+      setConnected(true);
+
+      // Lấy dữ liệu điểm và loại hình
+      const [diemResponse, loaiResponse] = await Promise.all([
+        getDiemDuLich(),
+        getLoaiHinh()
+      ]);
+
+      if (!diemResponse.success || !loaiResponse.success) {
+        throw new Error("API trả về dữ liệu không hợp lệ");
+      }
+
+      if (
+        !Array.isArray(diemResponse.data) ||
+        !Array.isArray(loaiResponse.data)
+      ) {
+        throw new Error("Dữ liệu API không phải danh sách");
+      }
+
+      setDestinations(diemResponse.data);
+      setCategories(loaiResponse.data);
+    } catch (err) {
+      console.error("TourismGIS API:", err);
+
+      setConnected(false);
+      setDestinations([]);
+      setCategories([]);
+
+      setError(
+        "Không thể tải dữ liệu. Hãy kiểm tra Backend " +
+        "ở cổng 5000 và kết nối PostgreSQL."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Tải dữ liệu khi mở trang
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  const currentPage = pageInfo[activePage] || pageInfo.dashboard;
+
+  function changePage(page) {
+    setActivePage(page);
+
+    // Tự động xóa từ khóa khi chuyển trang
+    setSearch("");
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app-layout">
+      <Sidebar
+        activePage={activePage}
+        onChangePage={changePage}
+        mobileOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+      />
 
-      <div className="ticks"></div>
+      <div className="main-layout">
+        <Header
+          title={currentPage.title}
+          subtitle={currentPage.subtitle}
+          onOpenMenu={() => setMobileOpen(true)}
+          connected={connected}
+          search={search}
+          onSearchChange={setSearch}
+          onRefresh={loadData}
+          refreshing={loading}
+        />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        <main className="main-content">
+          {activePage === "dashboard" ? (
+            <Dashboard
+              destinations={destinations}
+              categories={categories}
+              search={search}
+              loading={loading}
+              error={error}
+              onRefresh={loadData}
+              onNavigate={changePage}
+            />
+          ) : (
+            <ModulePlaceholder
+              title={currentPage.title}
+              description={currentPage.subtitle}
+              onBack={() => changePage("dashboard")}
+            />
+          )}
+        </main>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <footer className="app-footer">
+          TourismGIS · Hệ thống quản lý và phân tích không gian
+        </footer>
+      </div>
+    </div>
+  );
 }
-
-export default App
