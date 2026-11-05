@@ -15,7 +15,8 @@ export default function Header({
   search,
   onSearchChange,
   onRefresh,
-  refreshing
+  refreshing,
+  showSearch = true
 }) {
   return (
     <header className="top-header">
@@ -35,18 +36,22 @@ export default function Header({
       </div>
 
       <div className="header-actions">
+        
+        {showSearch && (
         <div className="header-search">
-          <Search size={18} />
-          <input
+            <Search size={18} />
+            <input
             type="search"
             placeholder="Tìm điểm du lịch..."
             aria-label="Tìm điểm du lịch"
             value={search}
             onChange={(event) => {
-              onSearchChange(event.target.value);
+                onSearchChange(event.target.value);
             }}
-          />
+            />
         </div>
+        )}
+
 
         <button
           className="icon-button"

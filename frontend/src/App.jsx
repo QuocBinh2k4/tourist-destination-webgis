@@ -6,6 +6,8 @@ import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import ModulePlaceholder from "./pages/ModulePlaceholder";
 
+import DiemDuLichPage from "./pages/DiemDuLichPage";
+
 import {
   getDiemDuLich,
   getLoaiHinh,
@@ -136,8 +138,10 @@ export default function App() {
           onSearchChange={setSearch}
           onRefresh={loadData}
           refreshing={loading}
+          showSearch={activePage === "dashboard"}
         />
 
+        
         <main className="main-content">
           {activePage === "dashboard" ? (
             <Dashboard
@@ -149,6 +153,10 @@ export default function App() {
               onRefresh={loadData}
               onNavigate={changePage}
             />
+          ) : activePage === "destinations" ? (
+            <DiemDuLichPage
+              onDataChanged={loadData}
+            />
           ) : (
             <ModulePlaceholder
               title={currentPage.title}
@@ -157,6 +165,7 @@ export default function App() {
             />
           )}
         </main>
+
 
         <footer className="app-footer">
           TourismGIS · Hệ thống quản lý và phân tích không gian
