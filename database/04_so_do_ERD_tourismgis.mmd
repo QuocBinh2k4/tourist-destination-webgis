@@ -1,0 +1,62 @@
+erDiagram
+    DON_VI_HANH_CHINH ||--o{ DON_VI_HANH_CHINH : "parent_id"
+    DIEM_DU_LICH ||--o{ DIEM_DU_LICH_LOAI_HINH : "phan_loai"
+    LOAI_HINH_DU_LICH ||--o{ DIEM_DU_LICH_LOAI_HINH : "duoc_gan"
+    CO_SO_DICH_VU ||--o{ CO_SO_DICH_VU_LOAI : "cung_cap"
+    LOAI_DICH_VU ||--o{ CO_SO_DICH_VU_LOAI : "duoc_cung_cap"
+    LOAI_DICH_VU ||--o| TIEU_CHI_TIEP_CAN : "co_tieu_chi"
+    DIEM_DU_LICH ||--o{ ANH_DIEM_DU_LICH : "co_anh"
+
+    DON_VI_HANH_CHINH {
+        bigint id PK
+        varchar ma_dvhc UK
+        varchar ten
+        varchar cap_hanh_chinh
+        bigint parent_id FK
+        multipolygon geom
+    }
+    DIEM_DU_LICH {
+        bigint id PK
+        varchar ma UK
+        varchar ten
+        numeric gia_ve_vnd
+        jsonb gio_mo_cua
+        varchar trang_thai
+        point geom
+    }
+    LOAI_HINH_DU_LICH {
+        bigint id PK
+        varchar ma UK
+        varchar ten
+    }
+    DIEM_DU_LICH_LOAI_HINH {
+        bigint diem_du_lich_id PK,FK
+        bigint loai_hinh_id PK,FK
+    }
+    CO_SO_DICH_VU {
+        bigint id PK
+        varchar ma UK
+        varchar ten
+        varchar trang_thai
+        point geom
+    }
+    LOAI_DICH_VU {
+        bigint id PK
+        varchar ma UK
+        varchar ten
+    }
+    CO_SO_DICH_VU_LOAI {
+        bigint co_so_dich_vu_id PK,FK
+        bigint loai_dich_vu_id PK,FK
+    }
+    TIEU_CHI_TIEP_CAN {
+        bigint loai_dich_vu_id PK,FK
+        integer ban_kinh_m
+        integer so_luong_toi_thieu
+        numeric trong_so
+    }
+    ANH_DIEM_DU_LICH {
+        bigint id PK
+        bigint diem_du_lich_id FK
+        text duong_dan
+    }

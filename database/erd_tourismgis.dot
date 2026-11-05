@@ -1,0 +1,73 @@
+digraph tourismgis {
+    graph [fontname="DejaVu Sans", bgcolor="white", rankdir=LR, ranksep=0.85, nodesep=0.38, pad=0.35, splines=polyline, outputorder=edgesfirst];
+    node [fontname="DejaVu Sans", shape=plain];
+    edge [fontname="DejaVu Sans", fontsize=9, color="#7793a4", fontcolor="#486477", arrowsize=0.7, penwidth=1.5];
+
+    dvhc [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#477c8a" BGCOLOR="#f3f8fa">
+       <TR><TD BGCOLOR="#286d79"><FONT COLOR="white"><B>don_vi_hanh_chinh</B></FONT></TD></TR>
+       <TR><TD ALIGN="LEFT">🔑 id : BIGINT</TD></TR>
+       <TR><TD ALIGN="LEFT">ma_dvhc : VARCHAR(30)</TD></TR>
+       <TR><TD ALIGN="LEFT">ten, cap_hanh_chinh</TD></TR>
+       <TR><TD ALIGN="LEFT">parent_id : BIGINT (FK)</TD></TR>
+       <TR><TD ALIGN="LEFT">geom : MULTIPOLYGON</TD></TR>
+    </TABLE>>];
+    diem [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#477c8a" BGCOLOR="#f3f8fa">
+       <TR><TD BGCOLOR="#286d79"><FONT COLOR="white"><B>diem_du_lich</B></FONT></TD></TR>
+       <TR><TD ALIGN="LEFT">🔑 id : BIGINT</TD></TR>
+       <TR><TD ALIGN="LEFT">ma, ten, dia_chi</TD></TR>
+       <TR><TD ALIGN="LEFT">gia_ve_vnd, gio_mo_cua</TD></TR>
+       <TR><TD ALIGN="LEFT">trang_thai, nguon_du_lieu</TD></TR>
+       <TR><TD ALIGN="LEFT">geom : POINT</TD></TR>
+    </TABLE>>];
+    lhs [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#477c8a" BGCOLOR="#f3f8fa">
+       <TR><TD BGCOLOR="#286d79"><FONT COLOR="white"><B>loai_hinh_du_lich</B></FONT></TD></TR>
+       <TR><TD ALIGN="LEFT">🔑 id : BIGINT</TD></TR>
+       <TR><TD ALIGN="LEFT">ma, ten</TD></TR>
+       <TR><TD ALIGN="LEFT">mo_ta, is_active</TD></TR>
+    </TABLE>>];
+    diemloai [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#b48a32" BGCOLOR="#fff8eb">
+       <TR><TD BGCOLOR="#b18427"><FONT COLOR="white"><B>diem_du_lich_loai_hinh</B></FONT></TD></TR>
+       <TR><TD ALIGN="LEFT">🔑 diem_du_lich_id (FK)</TD></TR>
+       <TR><TD ALIGN="LEFT">🔑 loai_hinh_id (FK)</TD></TR>
+    </TABLE>>];
+    dichvu [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#477c8a" BGCOLOR="#f3f8fa">
+       <TR><TD BGCOLOR="#286d79"><FONT COLOR="white"><B>co_so_dich_vu</B></FONT></TD></TR>
+       <TR><TD ALIGN="LEFT">🔑 id : BIGINT</TD></TR>
+       <TR><TD ALIGN="LEFT">ma, ten, dia_chi</TD></TR>
+       <TR><TD ALIGN="LEFT">trang_thai, nguon_du_lieu</TD></TR>
+       <TR><TD ALIGN="LEFT">geom : POINT</TD></TR>
+    </TABLE>>];
+    ldv [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#477c8a" BGCOLOR="#f3f8fa">
+       <TR><TD BGCOLOR="#286d79"><FONT COLOR="white"><B>loai_dich_vu</B></FONT></TD></TR>
+       <TR><TD ALIGN="LEFT">🔑 id : BIGINT</TD></TR>
+       <TR><TD ALIGN="LEFT">ma, ten, is_active</TD></TR>
+    </TABLE>>];
+    cosoloai [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#b48a32" BGCOLOR="#fff8eb">
+       <TR><TD BGCOLOR="#b18427"><FONT COLOR="white"><B>co_so_dich_vu_loai</B></FONT></TD></TR>
+       <TR><TD ALIGN="LEFT">🔑 co_so_dich_vu_id (FK)</TD></TR>
+       <TR><TD ALIGN="LEFT">🔑 loai_dich_vu_id (FK)</TD></TR>
+    </TABLE>>];
+    tieuchi [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#669a73" BGCOLOR="#f1f9f1">
+       <TR><TD BGCOLOR="#418056"><FONT COLOR="white"><B>tieu_chi_tiep_can</B></FONT></TD></TR>
+       <TR><TD ALIGN="LEFT">🔑 loai_dich_vu_id (FK)</TD></TR>
+       <TR><TD ALIGN="LEFT">ban_kinh_m : INTEGER</TD></TR>
+       <TR><TD ALIGN="LEFT">so_luong_toi_thieu : INTEGER</TD></TR>
+       <TR><TD ALIGN="LEFT">trong_so : NUMERIC</TD></TR>
+    </TABLE>>];
+    anh [label=<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" COLOR="#477c8a" BGCOLOR="#f3f8fa">
+       <TR><TD BGCOLOR="#286d79"><FONT COLOR="white"><B>anh_diem_du_lich</B></FONT></TD></TR>
+       <TR><TD ALIGN="LEFT">🔑 id : BIGINT</TD></TR>
+       <TR><TD ALIGN="LEFT">diem_du_lich_id (FK)</TD></TR>
+       <TR><TD ALIGN="LEFT">duong_dan, thu_tu</TD></TR>
+    </TABLE>>];
+    {rank=same; lhs; diem; dichvu; ldv}
+    lhs -> diemloai [label="1:N"];
+    diem -> diemloai [label="1:N"];
+    diem -> anh [label="1:N"];
+    dichvu -> cosoloai [label="1:N"];
+    ldv -> cosoloai [label="1:N"];
+    ldv -> tieuchi [label="1:0..1"];
+    dvhc -> dvhc [label="cha-con",constraint=false];
+    dvhc -> diem [style=dashed, label="ST_Covers", color="#a3adae", constraint=false];
+    dvhc -> dichvu [style=dashed, label="ST_Covers", color="#a3adae", constraint=false];
+}
