@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import CoordinatePicker from "./CoordinatePicker";
 
 import {
   X,
@@ -66,14 +67,33 @@ export default function DiemDuLichForm({
 }) {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   // Đồng bộ dữ liệu khi mở form hoặc thay đổi đối tượng
   useEffect(() => {
     if (open) {
       setForm(toFormData(initialData));
       setErrors({});
+      setPickerOpen(false);
     }
   }, [open, initialData]);
+
+  
+    function handleMapPosition(position) {
+    setForm((prev) => ({
+        ...prev,
+        longitude: position.longitude.toFixed(6),
+        latitude: position.latitude.toFixed(6)
+    }));
+
+    setErrors((prev) => ({
+        ...prev,
+        longitude: "",
+        latitude: ""
+    }));
+
+    setPickerOpen(false);
+    }
 
   if (!open) return null;
 
@@ -480,6 +500,17 @@ export default function DiemDuLichForm({
               </span>
             </div>
 
+            
+            <button
+                type="button"
+                className="dm-btn dm-btn-secondary pick-coordinate-button"
+                onClick={() => setPickerOpen(true)}
+            >
+                <MapPin size={18} />
+                Chọn vị trí trực tiếp trên bản đồ
+            </button>
+
+
             <div className="dm-form-grid">
               <div className="dm-field">
                 <label htmlFor="longitude">
@@ -560,6 +591,14 @@ export default function DiemDuLichForm({
           </div>
         </form>
       </div>
+      {pickerOpen && (
+        <CoordinatePicker
+            initialLatitude={form.latitude}
+            initialLongitude={form.longitude}
+            onConfirm={handleMapPosition}
+            onClose={() => setPickerOpen(false)}
+        />
+        )}
     </div>
   );
 }

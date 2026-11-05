@@ -77,4 +77,22 @@ export function getApiError(error) {
     "Không thể thực hiện thao tác. Kiểm tra kết nối Backend.";
 }
 
+
+export async function getMapDiemDuLich() {
+  const response = await api.get(
+    "/map/diem-du-lich"
+  );
+
+  return response.data;
+}
+
+export async function getMapCoSoDichVu() {
+  const response = await api.get(
+    "/map/co-so-dich-vu"
+  );
+
+  return response.data;
+}
+
+
 export default api;

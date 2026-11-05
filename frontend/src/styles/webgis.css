@@ -1,0 +1,316 @@
+
+/* Trang WebGIS */
+
+.webgis-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.webgis-page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.webgis-page-heading h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  color: #1d354a;
+}
+
+.webgis-page-heading p {
+  margin: 0;
+  color: #8191a0;
+  font-size: 12px;
+}
+
+.webgis-workspace {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.webgis-tools,
+.webgis-map-panel {
+  background: white;
+  border: 1px solid #e4eaf1;
+  border-radius: 13px;
+  overflow: hidden;
+}
+
+.webgis-tools {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.webgis-tool-section {
+  padding: 20px;
+  border-bottom: 1px solid #e9eef3;
+}
+
+.webgis-tool-section h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 19px;
+  color: #244058;
+  font-size: 13px;
+}
+
+.webgis-layer-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  cursor: pointer;
+  font-size: 12px;
+  color: #506479;
+}
+
+.webgis-layer-row input {
+  accent-color: #15917a;
+}
+
+.webgis-layer-row strong {
+  margin-left: auto;
+  color: #2b4359;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px #cbd5e1;
+}
+
+.legend-dot.destination {
+  background: #0f9d81;
+}
+
+.legend-dot.service {
+  background: #f59e0b;
+}
+
+.webgis-search {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #dfe7ee;
+  border-radius: 8px;
+  outline: none;
+  font-size: 12px;
+}
+
+.webgis-search:focus {
+  border-color: #0f9d81;
+}
+
+.webgis-subtext {
+  font-size: 11px;
+  color: #8a99a7;
+  line-height: 1.6;
+}
+
+.webgis-result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.webgis-result {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px;
+  border: 1px solid #e9eef3;
+  border-radius: 8px;
+  background: #fff;
+  text-align: left;
+  color: #148b76;
+}
+
+.webgis-result:hover {
+  background: #effaf6;
+  border-color: #b5e6d8;
+}
+
+.webgis-result span {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.webgis-result strong {
+  font-size: 12px;
+  color: #324b61;
+}
+
+.webgis-result small {
+  font-size: 10px;
+  color: #91a0ad;
+}
+
+.webgis-coordinates {
+  padding: 12px;
+  border-radius: 8px;
+  background: #eef8f5;
+}
+
+.webgis-coordinates p {
+  font-size: 12px;
+  color: #42665d;
+}
+
+.webgis-map-panel {
+  min-width: 0;
+}
+
+.tourism-leaflet-map {
+  width: 100%;
+  min-height: 360px;
+  z-index: 0;
+}
+
+.webgis-map-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 20px;
+  color: #748596;
+  font-size: 11px;
+}
+
+.webgis-map-footer span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.webgis-popup {
+  min-width: 180px;
+  font-family: "Inter", sans-serif;
+}
+
+.webgis-popup h3 {
+  margin: 10px 0;
+  color: #1b374f;
+  font-size: 15px;
+}
+
+.webgis-popup p {
+  margin: 7px 0;
+  line-height: 1.5;
+  font-size: 12px;
+}
+
+.webgis-popup-type {
+  display: inline-block;
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: #e6f7f0;
+  color: #168b70;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.webgis-popup-type.service {
+  color: #ad740c;
+  background: #fff4dd;
+}
+
+.webgis-popup-coords {
+  color: #8293a3;
+}
+
+/* Bộ chọn tọa độ */
+
+.coordinate-picker-overlay {
+  z-index: 200;
+}
+
+.coordinate-picker {
+  width: min(850px, 96vw);
+  max-height: 95vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  background: white;
+}
+
+.coordinate-picker-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 24px;
+}
+
+.coordinate-picker-header h2 {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  margin: 0 0 7px;
+  font-size: 18px;
+}
+
+.coordinate-picker-header p {
+  margin: 0;
+  color: #8292a0;
+  font-size: 12px;
+}
+
+.coordinate-picker-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 24px;
+}
+
+.coordinate-picker-footer > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: #405d70;
+}
+
+.pick-coordinate-button {
+  margin-bottom: 16px;
+}
+
+@media (max-width: 1100px) {
+  .webgis-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .webgis-result-list {
+    max-height: 160px;
+  }
+}
+
+@media (max-width: 650px) {
+  .webgis-page-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .coordinate-picker-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .coordinate-picker-header,
+  .coordinate-picker-footer {
+    padding: 15px;
+  }
+}

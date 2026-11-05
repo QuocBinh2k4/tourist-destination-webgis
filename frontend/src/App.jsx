@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useState } from "react";
 
 import Sidebar from "./components/Sidebar";
@@ -7,39 +6,36 @@ import Dashboard from "./pages/Dashboard";
 import ModulePlaceholder from "./pages/ModulePlaceholder";
 
 import DiemDuLichPage from "./pages/DiemDuLichPage";
+import WebGISPage from "./pages/WebGISPage";
 
-import {
-  getDiemDuLich,
-  getLoaiHinh,
-  checkHealth
-} from "./api/client";
+import { getDiemDuLich, getLoaiHinh, checkHealth } from "./api/client";
 
 // Thông tin các trang
 const pageInfo = {
   dashboard: {
     title: "Tổng quan",
-    subtitle: "Bảng điều khiển hệ thống TourismGIS"
+    subtitle: "Bảng điều khiển hệ thống TourismGIS",
   },
   destinations: {
     title: "Quản lý điểm du lịch",
-    subtitle: "Quản lý thông tin và vị trí điểm du lịch"
+    subtitle: "Quản lý thông tin và vị trí điểm du lịch",
   },
   categories: {
     title: "Loại hình du lịch",
-    subtitle: "Danh mục phân loại điểm du lịch"
+    subtitle: "Danh mục phân loại điểm du lịch",
   },
   services: {
     title: "Cơ sở dịch vụ",
-    subtitle: "Quản lý các cơ sở phục vụ du lịch"
+    subtitle: "Quản lý các cơ sở phục vụ du lịch",
   },
   map: {
     title: "Bản đồ WebGIS",
-    subtitle: "Trực quan hóa dữ liệu không gian"
+    subtitle: "Trực quan hóa dữ liệu không gian",
   },
   analysis: {
     title: "Phân tích không gian",
-    subtitle: "Phân tích vùng đệm và khả năng tiếp cận"
-  }
+    subtitle: "Phân tích vùng đệm và khả năng tiếp cận",
+  },
 };
 
 export default function App() {
@@ -73,7 +69,7 @@ export default function App() {
       // Lấy dữ liệu điểm và loại hình
       const [diemResponse, loaiResponse] = await Promise.all([
         getDiemDuLich(),
-        getLoaiHinh()
+        getLoaiHinh(),
       ]);
 
       if (!diemResponse.success || !loaiResponse.success) {
@@ -98,7 +94,7 @@ export default function App() {
 
       setError(
         "Không thể tải dữ liệu. Hãy kiểm tra Backend " +
-        "ở cổng 5000 và kết nối PostgreSQL."
+          "ở cổng 5000 và kết nối PostgreSQL.",
       );
     } finally {
       setLoading(false);
@@ -141,7 +137,6 @@ export default function App() {
           showSearch={activePage === "dashboard"}
         />
 
-        
         <main className="main-content">
           {activePage === "dashboard" ? (
             <Dashboard
@@ -154,9 +149,9 @@ export default function App() {
               onNavigate={changePage}
             />
           ) : activePage === "destinations" ? (
-            <DiemDuLichPage
-              onDataChanged={loadData}
-            />
+            <DiemDuLichPage onDataChanged={loadData} />
+          ) : activePage === "map" ? (
+            <WebGISPage />
           ) : (
             <ModulePlaceholder
               title={currentPage.title}
@@ -165,7 +160,6 @@ export default function App() {
             />
           )}
         </main>
-
 
         <footer className="app-footer">
           TourismGIS · Hệ thống quản lý và phân tích không gian

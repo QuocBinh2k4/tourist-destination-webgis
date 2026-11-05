@@ -10,6 +10,10 @@ const loaiHinhRoutes = require(
   "./routes/loaiHinhRoutes"
 );
 
+const mapRoutes = require(
+  "./routes/mapRoutes"
+);
+
 const errorHandler = require(
   "./middleware/errorHandler"
 );
@@ -54,6 +58,11 @@ app.use(
 app.use(
   "/api/loai-hinh",
   loaiHinhRoutes
+);
+
+app.use(
+  "/api/map", 
+  mapRoutes
 );
 
 // API không tồn tại
