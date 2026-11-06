@@ -9,6 +9,11 @@ import DiemDuLichPage from "./pages/DiemDuLichPage";
 import WebGISPage from "./pages/WebGISPage";
 
 import { getDiemDuLich, getLoaiHinh, checkHealth } from "./api/client";
+import PhanTichPage from "./pages/PhanTichPage";
+import CoSoDichVuPage from "./pages/CoSoDichVuPage";
+import LoaiDichVuPage from "./pages/LoaiDichVuPage";
+import ThongKePage from "./pages/ThongKePage";
+import ThieuDichVuPage from "./pages/ThieuDichVuPage";
 
 // Thông tin các trang
 const pageInfo = {
@@ -35,6 +40,19 @@ const pageInfo = {
   analysis: {
     title: "Phân tích không gian",
     subtitle: "Phân tích vùng đệm và khả năng tiếp cận",
+  },
+
+  "service-types": {
+    title: "Quản lý loại dịch vụ",
+    subtitle: "Danh mục phân loại các cơ sở dịch vụ",
+  },
+  statistics: {
+    title: "Thống kê và biểu đồ",
+    subtitle: "Phân tích dữ liệu thống kê du lịch",
+  },
+  "service-gaps": {
+    title: "Khu vực thiếu dịch vụ",
+    subtitle: "Phân tích sự phân bố và thiếu hụt dịch vụ",
   },
 };
 
@@ -150,8 +168,18 @@ export default function App() {
             />
           ) : activePage === "destinations" ? (
             <DiemDuLichPage onDataChanged={loadData} />
+          ) : activePage === "services" ? (
+            <CoSoDichVuPage />
+          ) : activePage === "service-types" ? (
+            <LoaiDichVuPage />
           ) : activePage === "map" ? (
             <WebGISPage />
+          ) : activePage === "analysis" ? (
+            <PhanTichPage />
+          ) : activePage === "statistics" ? (
+            <ThongKePage />
+          ) : activePage === "service-gaps" ? (
+            <ThieuDichVuPage />
           ) : (
             <ModulePlaceholder
               title={currentPage.title}

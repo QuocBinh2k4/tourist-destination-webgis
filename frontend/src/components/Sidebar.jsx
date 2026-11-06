@@ -1,4 +1,3 @@
-
 import {
   LayoutDashboard,
   MapPin,
@@ -8,47 +7,64 @@ import {
   ChartNoAxesCombined,
   MapPinned,
   X,
-  Database
+  Database,
+  BarChart3,
+  ShieldAlert,
 } from "lucide-react";
 
 const menuItems = [
   {
     id: "dashboard",
     label: "Tổng quan",
-    icon: LayoutDashboard
+    icon: LayoutDashboard,
   },
   {
     id: "destinations",
     label: "Điểm du lịch",
-    icon: MapPin
+    icon: MapPin,
   },
   {
     id: "categories",
     label: "Loại hình du lịch",
-    icon: Tags
+    icon: Tags,
   },
   {
     id: "services",
     label: "Cơ sở dịch vụ",
-    icon: Building2
+    icon: Building2,
+  },
+  {
+    id: "service-types",
+    label: "Loại dịch vụ",
+    icon: Tags,
   },
   {
     id: "map",
     label: "Bản đồ WebGIS",
-    icon: Map
+    icon: Map,
   },
   {
     id: "analysis",
     label: "Phân tích không gian",
-    icon: ChartNoAxesCombined
-  }
+    icon: ChartNoAxesCombined,
+  },
+  {
+    id: "statistics",
+    label: "Thống kê",
+    icon: BarChart3,
+  },
+  {
+    id: "service-gaps",
+    label: "Khu vực thiếu dịch vụ",
+    icon: ShieldAlert,
+  },
 ];
 
 export default function Sidebar({
   activePage,
   onChangePage,
   mobileOpen,
-  onClose
+  onClose,
 }) {
   return (
     <>
@@ -60,9 +76,7 @@ export default function Sidebar({
         />
       )}
 
-      <aside
-        className={`sidebar ${mobileOpen ? "sidebar-open" : ""}`}
-      >
+      <aside className={`sidebar ${mobileOpen ? "sidebar-open" : ""}`}>
         <div className="sidebar-brand">
           <div className="brand-icon">
             <MapPinned size={25} />
@@ -82,9 +96,7 @@ export default function Sidebar({
           </button>
         </div>
 
-        <div className="sidebar-section-label">
-          QUẢN LÝ HỆ THỐNG
-        </div>
+        <div className="sidebar-section-label">QUẢN LÝ HỆ THỐNG</div>
 
         <nav className="sidebar-menu">
           {menuItems.map((item) => {
@@ -115,9 +127,7 @@ export default function Sidebar({
               <span>Cơ sở dữ liệu không gian</span>
             </div>
           </div>
-          <div className="sidebar-version">
-            TourismGIS · Phiên bản 1.0
-          </div>
+          <div className="sidebar-version">TourismGIS · Phiên bản 1.0</div>
         </div>
       </aside>
     </>
