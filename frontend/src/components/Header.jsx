@@ -3,11 +3,17 @@ import {
   Menu,
   Search,
   RefreshCw,
+  LogOut,
+  LoaderCircle,
+  UserRound,
   Wifi,
   WifiOff
 } from "lucide-react";
 
 export default function Header({
+  currentUser,
+  onLogout,
+  loggingOut,
   title,
   subtitle,
   onOpenMenu,
@@ -83,6 +89,28 @@ export default function Header({
           <span>
             {connected ? "Đã kết nối" : "Mất kết nối"}
           </span>
+        </div>
+        <div className="header-account">
+          <div className="header-avatar" aria-hidden="true">
+            <UserRound size={18} />
+          </div>
+          <div className="header-account-info">
+            <strong title={currentUser.fullName}>{currentUser.fullName}</strong>
+            <span>{({ admin: "Quản trị viên", editor: "Biên tập viên", viewer: "Người xem" })[currentUser.role] || currentUser.role}</span>
+          </div>
+          <button
+            className="logout-button"
+            type="button"
+            onClick={onLogout}
+            disabled={loggingOut}
+            aria-busy={loggingOut}
+            title="Đăng xuất khỏi hệ thống"
+          >
+            {loggingOut
+              ? <LoaderCircle size={16} className="spin" aria-hidden="true" />
+              : <LogOut size={16} aria-hidden="true" />}
+            <span>{loggingOut ? "Đang đăng xuất..." : "Đăng xuất"}</span>
+          </button>
         </div>
       </div>
     </header>

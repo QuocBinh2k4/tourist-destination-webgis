@@ -34,7 +34,10 @@ const statusText = {
   ngung_hoat_dong: "Ngừng hoạt động"
 };
 
-export default function CoSoDichVuPage() {
+export default function CoSoDichVuPage({ role }) {
+  const canManage = role === "admin";
+  const canEdit = canManage || role === "editor";
+
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
@@ -248,9 +251,9 @@ export default function CoSoDichVuPage() {
           <h2>Quản lý cơ sở dịch vụ</h2>
           <p>Nhà hàng, lưu trú, y tế và các dịch vụ du lịch</p>
         </div>
-        <button className="p8-primary" onClick={openCreate}>
+        {canEdit && (<button className="p8-primary" onClick={openCreate}>
           <Plus size={17} /> Thêm cơ sở
-        </button>
+        </button>)}
       </div>
 
       {message && (
@@ -337,20 +340,20 @@ export default function CoSoDichVuPage() {
                     {Number(item.longitude).toFixed(5)}
                   </td>
                   <td>
-                    <button
+                    {canEdit && (<button
                       className="p8-secondary"
                       onClick={() => openEdit(item.id)}
                       title="Sửa"
                     >
                       <Pencil size={15} />
-                    </button>{" "}
-                    <button
+                    </button>)}{" "}
+                    {canManage && (<button
                       className="p8-secondary"
                       disabled={item.trang_thai === "ngung_hoat_dong"}
                       onClick={() => handleDeactivate(item)}
                     >
                       Ngừng
-                    </button>
+                    </button>)}
                   </td>
                 </tr>
               ))}

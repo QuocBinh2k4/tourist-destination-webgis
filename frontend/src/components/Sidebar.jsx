@@ -2,6 +2,7 @@ import {
   LayoutDashboard,
   MapPin,
   Tags,
+  Landmark,
   Building2,
   Map,
   ChartNoAxesCombined,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 
 const menuItems = [
+  { id: "heritage", label: "Di sản văn hóa", icon: Landmark },
   {
     id: "dashboard",
     label: "Tổng quan",

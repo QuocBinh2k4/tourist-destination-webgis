@@ -51,7 +51,9 @@ const statusNames = {
   ngung_hoat_dong: "Ngừng hoạt động"
 };
 
-export default function DiemDuLichPage({ onDataChanged }) {
+export default function DiemDuLichPage({ onDataChanged, role }) {
+  const canDelete = role === "admin";
+  const canEdit = canDelete || role === "editor";
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -291,13 +293,13 @@ export default function DiemDuLichPage({ onDataChanged }) {
           </p>
         </div>
 
-        <button
+        {canEdit && (<button
           className="dm-btn dm-btn-primary"
           onClick={openCreate}
         >
           <Plus size={18} />
           Thêm điểm du lịch
-        </button>
+        </button>)}
       </div>
 
       {message && (
@@ -479,7 +481,7 @@ export default function DiemDuLichPage({ onDataChanged }) {
 
                     <td>
                       <div className="dm-row-actions">
-                        <button
+                        {canEdit && (<button
                           title="Chỉnh sửa"
                           aria-label={`Sửa ${item.ten}`}
                           className="dm-action-edit"
@@ -487,9 +489,9 @@ export default function DiemDuLichPage({ onDataChanged }) {
                           disabled={loadingEdit}
                         >
                           <Pencil size={17} />
-                        </button>
+                        </button>)}
 
-                        <button
+                        {canDelete && (<button
                           title="Xóa"
                           aria-label={`Xóa ${item.ten}`}
                           className="dm-action-delete"
@@ -499,7 +501,7 @@ export default function DiemDuLichPage({ onDataChanged }) {
                           }}
                         >
                           <Trash2 size={17} />
-                        </button>
+                        </button>)}
                       </div>
                     </td>
                   </tr>

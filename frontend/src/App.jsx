@@ -14,9 +14,23 @@ import CoSoDichVuPage from "./pages/CoSoDichVuPage";
 import LoaiDichVuPage from "./pages/LoaiDichVuPage";
 import ThongKePage from "./pages/ThongKePage";
 import ThieuDichVuPage from "./pages/ThieuDichVuPage";
+import LoaiHinhPage from "./pages/LoaiHinhPage";
+import DiSanPage from "./pages/DiSanPage";
+
+import LoginPage from "./pages/LoginPage";
+import {
+  getCurrentUser,
+  logout,
+  getApiError,
+  default as api
+} from "./api/client";
 
 // Thông tin các trang
 const pageInfo = {
+  heritage: {
+    title: "Di sản văn hóa Việt Nam",
+    subtitle: "Tra cứu di sản theo phân loại của Cục Di sản văn hóa",
+  },
   dashboard: {
     title: "Tổng quan",
     subtitle: "Bảng điều khiển hệ thống TourismGIS",
@@ -54,6 +68,7 @@ const pageInfo = {
     title: "Khu vực thiếu dịch vụ",
     subtitle: "Phân tích sự phân bố và thiếu hụt dịch vụ",
   },
+
 };
 
 export default function App() {
@@ -68,6 +83,11 @@ export default function App() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [currentUser, setCurrentUser] = useState(null);
+  const [logoutError, setLogoutError] = useState("");
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
   // Hàm tải dữ liệu từ Backend
   const loadData = useCallback(async () => {
@@ -121,8 +141,75 @@ export default function App() {
 
   // Tải dữ liệu khi mở trang
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    if (currentUser) {
+      loadData();
+    }
+  }, [currentUser, loadData]);
+
+
+  useEffect(() => {
+    let active = true;
+
+    getCurrentUser()
+      .then(response => {
+        if (active && response.success) {
+          setCurrentUser(response.user);
+        }
+      })
+      .catch(() => {
+        if (active) setCurrentUser(null);
+      })
+      .finally(() => {
+        if (active) setCheckingAuth(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    const interceptor = api.interceptors.response.use(response => response, error => {
+      if (error.response?.status === 401) setCurrentUser(null);
+      return Promise.reject(error);
+    });
+    return () => api.interceptors.response.eject(interceptor);
+  }, []);
+
+  async function handleLogout() {
+    setLoggingOut(true);
+    setLogoutError("");
+    try {
+      await logout();
+      setCurrentUser(null);
+      setDestinations([]);
+      setCategories([]);
+      setActivePage("dashboard");
+      setSearch("");
+    } catch (error) {
+      setLogoutError(getApiError(error));
+    } finally {
+      setLoggingOut(false);
+    }
+  }
+
+  if (checkingAuth) {
+    return (
+      <div className="login-screen">
+        <div className="login-card">
+          <p style={{ color: "white", margin: 0 }}>
+            Đang kiểm tra phiên đăng nhập...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentUser) {
+    return (
+      <LoginPage onLogin={(user) => setCurrentUser(user)} />
+    );
+  }
 
   const currentPage = pageInfo[activePage] || pageInfo.dashboard;
 
@@ -142,8 +229,13 @@ export default function App() {
         onClose={() => setMobileOpen(false)}
       />
 
+
+
       <div className="main-layout">
         <Header
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          loggingOut={loggingOut}
           title={currentPage.title}
           subtitle={currentPage.subtitle}
           onOpenMenu={() => setMobileOpen(true)}
@@ -156,6 +248,7 @@ export default function App() {
         />
 
         <main className="main-content">
+          {logoutError && <p role="alert">{logoutError}</p>}
           {activePage === "dashboard" ? (
             <Dashboard
               destinations={destinations}
@@ -166,12 +259,14 @@ export default function App() {
               onRefresh={loadData}
               onNavigate={changePage}
             />
+          ) : activePage === "heritage" ? (
+            <DiSanPage onOpenMap={() => changePage("map")} />
           ) : activePage === "destinations" ? (
-            <DiemDuLichPage onDataChanged={loadData} />
+            <DiemDuLichPage onDataChanged={loadData} role={currentUser.role} />
           ) : activePage === "services" ? (
-            <CoSoDichVuPage />
+            <CoSoDichVuPage role={currentUser.role} />
           ) : activePage === "service-types" ? (
-            <LoaiDichVuPage />
+            <LoaiDichVuPage role={currentUser.role} />
           ) : activePage === "map" ? (
             <WebGISPage />
           ) : activePage === "analysis" ? (
@@ -180,6 +275,8 @@ export default function App() {
             <ThongKePage />
           ) : activePage === "service-gaps" ? (
             <ThieuDichVuPage />
+          ) : activePage === "categories" ? (
+            <LoaiHinhPage key={currentUser.role} role={currentUser.role} />
           ) : (
             <ModulePlaceholder
               title={currentPage.title}

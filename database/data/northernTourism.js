@@ -1,0 +1,53 @@
+// Dữ liệu chọn lọc cho miền Bắc, đối chiếu OpenStreetMap ngày 11/11/2026.
+// Không tự suy diễn giá vé, giờ mở cửa, điện thoại hoặc website.
+const osm = (type, id) => `https://www.openstreetmap.org/${type}/${id}`;
+
+const destinations = [
+  { ma: "MB_DL_VAN_MIEU", ten: "Văn Miếu - Quốc Tử Giám", dia_chi: "Phường Văn Miếu - Quốc Tử Giám, Hà Nội", longitude: 105.8359533, latitude: 21.0287903, categories: ["DI_TICH", "LS", "VH", "TU_LIEU"], mo_ta: "Quần thể di tích gắn với lịch sử giáo dục và khoa cử Việt Nam.", source: osm("relation", 21422528) },
+  { ma: "MB_DL_LANG_BAC", ten: "Lăng Chủ tịch Hồ Chí Minh", dia_chi: "1 đường Hùng Vương, phường Ba Đình, Hà Nội", longitude: 105.8346888, latitude: 21.0367831, categories: ["DI_TICH", "LS"], mo_ta: "Công trình tưởng niệm Chủ tịch Hồ Chí Minh tại Quảng trường Ba Đình.", source: osm("way", 37625751) },
+  { ma: "MB_DL_CHUA_MOT_COT", ten: "Chùa Một Cột", dia_chi: "Phố Ông Ích Khiêm, phường Ba Đình, Hà Nội", longitude: 105.8336143, latitude: 21.0358555, categories: ["DI_TICH", "VH"], mo_ta: "Ngôi chùa có kiến trúc biểu tượng của Hà Nội.", source: osm("way", 697326496) },
+  { ma: "MB_DL_HO_HOAN_KIEM", ten: "Hồ Hoàn Kiếm", dia_chi: "Phường Hoàn Kiếm, Hà Nội", longitude: 105.8525357, latitude: 21.0288313, categories: ["VH", "ST"], mo_ta: "Không gian cảnh quan và văn hóa ở trung tâm Hà Nội.", source: osm("relation", 198437) },
+  { ma: "MB_DL_HOA_LO", ten: "Di tích Nhà tù Hỏa Lò", dia_chi: "1 phố Hỏa Lò, phường Cửa Nam, Hà Nội", longitude: 105.8465093, latitude: 21.0254222, categories: ["DI_TICH", "LS", "BAO_TANG"], mo_ta: "Di tích lịch sử và không gian trưng bày tại trung tâm Hà Nội.", source: osm("way", 340128580) },
+  { ma: "MB_DL_TAM_COC", ten: "Tam Cốc - Bích Động", dia_chi: "Ninh Hải, tỉnh Ninh Bình", longitude: 105.937457, latitude: 20.2163426, categories: ["ST", "VH"], mo_ta: "Khu thắng cảnh sông, núi đá vôi và di tích văn hóa ở Ninh Bình.", source: osm("node", 4567308091) },
+  { ma: "MB_DL_BAI_DINH", ten: "Chùa Bái Đính", dia_chi: "Phường Tây Hoa Lư, tỉnh Ninh Bình", longitude: 105.8640252, latitude: 20.2728394, categories: ["DI_TICH", "VH"], mo_ta: "Quần thể chùa và không gian du lịch tâm linh ở Ninh Bình.", source: osm("way", 449263549) },
+  { ma: "MB_DL_CUC_PHUONG", ten: "Vườn quốc gia Cúc Phương", dia_chi: "Tỉnh Ninh Bình", longitude: 105.6176593, latitude: 20.3162835, categories: ["ST"], mo_ta: "Vườn quốc gia có hệ sinh thái rừng nhiệt đới và hoạt động tham quan thiên nhiên.", source: osm("relation", 15882261) },
+  { ma: "MB_DL_VINH_HA_LONG", ten: "Vịnh Hạ Long", dia_chi: "Tỉnh Quảng Ninh", longitude: 107.0682782, latitude: 20.9084384, categories: ["ST"], mo_ta: "Vịnh biển nổi tiếng với hệ thống đảo đá vôi và cảnh quan tự nhiên.", source: osm("node", 2707025319) },
+  { ma: "MB_DL_BT_QUANG_NINH", ten: "Bảo tàng Quảng Ninh", dia_chi: "Đường Trần Quốc Nghiễn, phường Hồng Gai, Quảng Ninh", longitude: 107.0975562, latitude: 20.9486771, categories: ["BAO_TANG", "VH", "LS"], mo_ta: "Không gian trưng bày lịch sử, văn hóa và tự nhiên của Quảng Ninh.", source: osm("node", 5395107122) },
+  { ma: "MB_DL_FANSIPAN", ten: "Đỉnh Phan Si Păng", dia_chi: "Khu vực giáp Lào Cai - Lai Châu", longitude: 103.7754412, latitude: 22.3030764, categories: ["ST"], mo_ta: "Đỉnh núi cao nhất Việt Nam, điểm đến trekking và ngắm cảnh Hoàng Liên Sơn.", source: osm("node", 13282179820) },
+  { ma: "MB_DL_HAM_RONG", ten: "Núi Hàm Rồng", dia_chi: "Phường Sa Pa, tỉnh Lào Cai", longitude: 103.8624287, latitude: 22.3325807, categories: ["ST"], mo_ta: "Điểm ngắm cảnh núi và thị xã Sa Pa.", source: osm("node", 11624629968) },
+  { ma: "MB_DL_BAN_GIOC", ten: "Thác Bản Giốc", dia_chi: "Xã Đàm Thủy, tỉnh Cao Bằng", longitude: 106.7232867, latitude: 22.8539003, categories: ["ST"], mo_ta: "Thác nước tự nhiên trên khu vực biên giới Việt Nam - Trung Quốc.", source: osm("node", 4759574761) },
+  { ma: "MB_DL_NGUOM_NGAO", ten: "Động Ngườm Ngao", dia_chi: "Xã Đàm Thủy, tỉnh Cao Bằng", longitude: 106.7060495, latitude: 22.8463574, categories: ["ST"], mo_ta: "Hang động đá vôi gần khu vực thác Bản Giốc.", source: osm("node", 4457979489) },
+  { ma: "MB_DL_BA_BE", ten: "Vườn quốc gia Ba Bể", dia_chi: "Khu vực Ba Bể, miền Bắc Việt Nam", longitude: 105.6078963, latitude: 22.4157814, categories: ["ST"], mo_ta: "Khu bảo tồn thiên nhiên với hồ nước ngọt, rừng và hệ sinh thái núi đá vôi.", source: osm("relation", 7110785) },
+  { ma: "MB_DL_HUA_MA", ten: "Động Hua Mạ", dia_chi: "Khu vực Ba Bể, miền Bắc Việt Nam", longitude: 105.6767229, latitude: 22.3517378, categories: ["ST"], mo_ta: "Hang động đá vôi trong vùng du lịch Ba Bể.", source: osm("node", 4879886024) },
+  { ma: "MB_DL_LUNG_CU", ten: "Cột cờ Lũng Cú", dia_chi: "Xã Lũng Cú, khu vực Hà Giang", longitude: 105.3163342, latitude: 23.3634614, categories: ["LS", "VH"], mo_ta: "Công trình biểu tượng ở vùng cực Bắc Việt Nam.", source: osm("way", 504649258) },
+  { ma: "MB_DL_MA_PI_LENG", ten: "Đèo Mã Pí Lèng", dia_chi: "Khu vực Đồng Văn - Mèo Vạc, Hà Giang", longitude: 105.3979217, latitude: 23.2419571, categories: ["ST"], mo_ta: "Cung đèo và điểm ngắm cảnh trên tuyến đường vùng cao Hà Giang.", source: osm("node", 4556557890) },
+  { ma: "MB_DL_CHUA_DAU", ten: "Chùa Dâu", dia_chi: "Thuận Thành, Bắc Ninh", longitude: 106.0425161, latitude: 21.0358692, categories: ["DI_TICH", "VH"], mo_ta: "Di tích Phật giáo cổ ở vùng văn hóa Kinh Bắc.", source: osm("way", 1365782460) },
+  { ma: "MB_DL_TAM_DAO", ten: "Vườn quốc gia Tam Đảo", dia_chi: "Dãy Tam Đảo, miền Bắc Việt Nam", longitude: 105.5848265, latitude: 21.5288833, categories: ["ST"], mo_ta: "Vườn quốc gia có hệ sinh thái rừng núi và các tuyến tham quan thiên nhiên.", source: osm("relation", 8369766) },
+  { ma: "MB_DL_DAI_YEM", ten: "Thác Dải Yếm", dia_chi: "Mộc Châu, tỉnh Sơn La", longitude: 104.591686, latitude: 20.817975, categories: ["ST"], mo_ta: "Thác nước và điểm tham quan tự nhiên ở Mộc Châu.", source: osm("node", 4958586922) },
+  { ma: "MB_DL_MAU_SON", ten: "Khu du lịch Mẫu Sơn", dia_chi: "Xã Mẫu Sơn, tỉnh Lạng Sơn", longitude: 106.9172341, latitude: 21.8496889, categories: ["ST"], mo_ta: "Khu nghỉ dưỡng và tham quan vùng núi Mẫu Sơn.", source: osm("node", 6799419133) },
+  { ma: "MB_DL_CON_SON_KIEP_BAC", ten: "Khu di tích Côn Sơn - Kiếp Bạc", dia_chi: "Khu vực Chí Linh, miền Bắc Việt Nam", longitude: 106.3816559, latitude: 21.1509953, categories: ["DI_TICH", "LS", "VH"], mo_ta: "Quần thể di tích lịch sử, văn hóa gắn với nhiều nhân vật và sự kiện Việt Nam.", source: osm("node", 5141145956) },
+  { ma: "MB_DL_CAT_BA", ten: "Vườn quốc gia Cát Bà", dia_chi: "Quần đảo Cát Bà, Hải Phòng", longitude: 107.0383362, latitude: 20.8063272, categories: ["ST"], mo_ta: "Vườn quốc gia trên quần đảo Cát Bà với hệ sinh thái rừng và biển.", source: osm("relation", 15979700) }
+];
+
+const services = [
+  { ma: "MB_DV_SOFITEL", ten: "Sofitel Legend Metropole Hà Nội", dia_chi: "15 Ngô Quyền, phường Hoàn Kiếm, Hà Nội", longitude: 105.855978, latitude: 21.0256106, types: ["LUU_TRU"], source: osm("relation", 21802486) },
+  { ma: "MB_DV_MELIA_HN", ten: "Meliá Hà Nội", dia_chi: "44B phố Lý Thường Kiệt, phường Cửa Nam, Hà Nội", longitude: 105.8484024, latitude: 21.0245301, types: ["LUU_TRU"], source: osm("way", 842628260) },
+  { ma: "MB_DV_PAN_PACIFIC", ten: "Pan Pacific Hanoi", dia_chi: "1 đường Thanh Niên, phường Ba Đình, Hà Nội", longitude: 105.8401318, latitude: 21.0496103, types: ["LUU_TRU"], source: osm("way", 1497610110) },
+  { ma: "MB_DV_APRICOT", ten: "Apricot Hotel", dia_chi: "136 phố Hàng Trống, phường Hoàn Kiếm, Hà Nội", longitude: 105.8507876, latitude: 21.0280942, types: ["LUU_TRU"], source: osm("way", 701605966) },
+  { ma: "MB_DV_NB_LEGEND", ten: "Ninh Binh Legend Hotel", dia_chi: "Đường Lê Thái Tổ, phường Hoa Lư, Ninh Bình", longitude: 105.9587265, latitude: 20.2744939, types: ["LUU_TRU"], source: osm("node", 2573378003) },
+  { ma: "MB_DV_TAM_COC_GARDEN", ten: "Tam Coc Garden Resort", dia_chi: "Ninh Hải, tỉnh Ninh Bình", longitude: 105.9080338, latitude: 20.211299, types: ["LUU_TRU"], source: osm("node", 5514399176) },
+  { ma: "MB_DV_NOVOTEL_HL", ten: "Novotel Ha Long", dia_chi: "Phường Bãi Cháy, tỉnh Quảng Ninh", longitude: 107.0420228, latitude: 20.9519701, types: ["LUU_TRU"], source: osm("way", 676720191) },
+  { ma: "MB_DV_COUPLE", ten: "Hotel de la Coupole", dia_chi: "1 đường Hoàng Liên, phường Sa Pa, Lào Cai", longitude: 103.8403835, latitude: 22.3347725, types: ["LUU_TRU"], source: osm("node", 13282967120) },
+  { ma: "MB_DV_PAO_SAPA", ten: "Pao's Sapa Leisure Hotel", dia_chi: "Đường Violet, phường Sa Pa, Lào Cai", longitude: 103.8466396, latitude: 22.3270114, types: ["LUU_TRU"], source: osm("node", 12824980787) },
+  { ma: "MB_DV_SILK_SAPA", ten: "Silk Path Grand Sapa Resort", dia_chi: "Đường Thác Bạc, phường Sa Pa, Lào Cai", longitude: 103.8372254, latitude: 22.3376935, types: ["LUU_TRU"], source: osm("node", 12248236361) },
+  { ma: "MB_DV_MT_CAO_BANG", ten: "Khách sạn Mường Thanh Cao Bằng", dia_chi: "42 phố Kim Đồng, Cao Bằng", longitude: 106.2595775, latitude: 22.6626747, types: ["LUU_TRU"], source: osm("way", 1149062825) },
+  { ma: "MB_DV_PHOENIX_HG", ten: "Phoenix Hotel Hà Giang", dia_chi: "Đường Nguyễn Trãi, khu vực Hà Giang", longitude: 104.9791069, latitude: 22.8104797, types: ["LUU_TRU"], source: osm("node", 14221766301) },
+  { ma: "MB_DV_MT_PHU_THO", ten: "Mường Thanh Phú Thọ", dia_chi: "Đường Hùng Vương, Việt Trì, Phú Thọ", longitude: 105.3921966, latitude: 21.3140267, types: ["LUU_TRU"], source: osm("way", 1454902671) },
+  { ma: "MB_DV_BV_NINH_BINH", ten: "Bệnh viện Đa khoa tỉnh Ninh Bình", dia_chi: "Đường Lê Thái Tổ, phường Hoa Lư, Ninh Bình", longitude: 105.9657114, latitude: 20.244107, types: ["Y_TE"], source: osm("way", 237122000) },
+  { ma: "MB_DV_BV_QUANG_NINH", ten: "Bệnh viện Đa khoa tỉnh Quảng Ninh", dia_chi: "Phường Hồng Gai, tỉnh Quảng Ninh", longitude: 107.0884298, latitude: 20.95376, types: ["Y_TE"], source: osm("way", 674228524) },
+  { ma: "MB_DV_BV_CAO_BANG", ten: "Bệnh viện Đa khoa tỉnh Cao Bằng", dia_chi: "Phường Tân Giang, Cao Bằng", longitude: 106.2701964, latitude: 22.6527902, types: ["Y_TE"], source: osm("way", 1068173328) },
+  { ma: "MB_DV_BV_HA_GIANG", ten: "Bệnh viện Đa khoa Hà Giang", dia_chi: "Đường Nguyễn Thái Học, khu vực Hà Giang", longitude: 104.984897, latitude: 22.8202889, types: ["Y_TE"], source: osm("way", 853226223) },
+  { ma: "MB_DV_CANG_HA_LONG", ten: "Cảng tàu khách quốc tế Hạ Long", dia_chi: "Phường Bãi Cháy, tỉnh Quảng Ninh", longitude: 107.0554545, latitude: 20.9536428, types: ["VAN_CHUYEN"], source: osm("node", 14053384506) }
+];
+
+module.exports = { destinations, services, checkedAt: "2026-11-11" };

@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const { getTrustedOrigins } = require("./config/origins");
 
 const diemDuLichRoutes = require("./routes/diemDuLichRoutes");
 
@@ -23,10 +24,25 @@ const thongKeRoutes = require("./routes/thongKeRoutes");
 
 const thieuDichVuRoutes = require("./routes/thieuDichVuRoutes");
 
+
+const helmet = require("helmet");
+const cookieParser = require("cookie-parser");
+const authRoutes = require("./routes/authRoutes");
+
+const {
+  requireAuth,
+  allowRoles,
+  requireTrustedOrigin
+} = require("./middleware/auth");
+
+app.use(helmet());
+app.use(cookieParser());
+
 // Cho phép React trên máy cục bộ truy cập API
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: getTrustedOrigins(),
+    credentials: true,
   }),
 );
 
@@ -53,22 +69,82 @@ app.get("/api/health", async (req, res, next) => {
 });
 
 // Đăng ký các nhóm API
-app.use("/api/diem-du-lich", diemDuLichRoutes);
+// API đăng nhập
+app.use("/api", requireTrustedOrigin);
+app.use("/api/auth", authRoutes);
 
-app.use("/api/loai-hinh", loaiHinhRoutes);
+// Từ đây, mọi API nghiệp vụ đều cần đăng nhập
+app.use("/api", requireAuth);
+app.use("/api/di-san", require("./routes/diSanRoutes"));
 
+// API danh mục loại hình
+app.use(
+  "/api/loai-hinh",
+  (req, res, next) => {
+    if (["POST", "PUT", "DELETE"].includes(req.method)) {
+      return allowRoles("admin")(req, res, next);
+    }
+
+    if (req.path === "/all") {
+      return allowRoles("admin")(req, res, next);
+    }
+
+    next();
+  },
+  loaiHinhRoutes
+);
+
+// Điểm du lịch
+app.use(
+  "/api/diem-du-lich",
+  (req, res, next) => {
+    if (req.method === "DELETE") {
+      return allowRoles("admin")(req, res, next);
+    }
+
+    if (["POST", "PUT"].includes(req.method)) {
+      return allowRoles("admin", "editor")(req, res, next);
+    }
+
+    next();
+  },
+  diemDuLichRoutes
+);
+
+// Cơ sở dịch vụ
+app.use(
+  "/api/co-so-dich-vu",
+  (req, res, next) => {
+    if (req.method === "DELETE") {
+      return allowRoles("admin")(req, res, next);
+    }
+
+    if (["POST", "PUT"].includes(req.method)) {
+      return allowRoles("admin", "editor")(req, res, next);
+    }
+
+    next();
+  },
+  coSoDichVuRoutes
+);
+
+// Loại dịch vụ
+app.use(
+  "/api/loai-dich-vu",
+  (req, res, next) => {
+    if (["POST", "PUT", "DELETE"].includes(req.method)) {
+      return allowRoles("admin")(req, res, next);
+    }
+    next();
+  },
+  loaiDichVuRoutes
+);
+
+// Các API đọc và phân tích
 app.use("/api/map", mapRoutes);
-
 app.use("/api/analysis", phanTichRoutes);
-
-app.use("/api/co-so-dich-vu", coSoDichVuRoutes);
-
-app.use("/api/loai-dich-vu", loaiDichVuRoutes);
-
 app.use("/api/stats", thongKeRoutes);
-
 app.use("/api/gaps", thieuDichVuRoutes);
-
 
 // API không tồn tại
 app.use((req, res) => {

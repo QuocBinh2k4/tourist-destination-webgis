@@ -18,7 +18,9 @@ const emptyForm = {
   is_active: true
 };
 
-export default function LoaiDichVuPage() {
+export default function LoaiDichVuPage({ role }) {
+  const canManage = role === "admin";
+
   const [items, setItems] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [editId, setEditId] = useState(null);
@@ -106,7 +108,7 @@ export default function LoaiDichVuPage() {
 
       {message && <div className="p8-message">{message}</div>}
 
-      <div className="p8-two-columns">
+      <div className={canManage ? "p8-two-columns" : ""}>
         <div className="p8-panel">
           <div className="p8-panel-title">
             <h3>Danh sách loại dịch vụ</h3>
@@ -131,19 +133,19 @@ export default function LoaiDichVuPage() {
                       {item.is_active ? "Hoạt động" : "Ngừng"}
                     </td>
                     <td>
-                      <button
+                      {canManage && (<button
                         className="p8-secondary"
                         onClick={() => edit(item)}
                       >
                         <Pencil size={15} />
-                      </button>{" "}
-                      <button
+                      </button>)}{" "}
+                      {canManage && (<button
                         className="p8-secondary"
                         disabled={!item.is_active}
                         onClick={() => deactivate(item)}
                       >
                         Ngừng
-                      </button>
+                      </button>)}
                     </td>
                   </tr>
                 ))}
@@ -152,7 +154,7 @@ export default function LoaiDichVuPage() {
           </div>
         </div>
 
-        <form className="p8-panel p8-inline-form" onSubmit={save}>
+        {canManage && (<form className="p8-panel p8-inline-form" onSubmit={save}>
           <h3>
             {editId ? "Chỉnh sửa loại dịch vụ" : "Thêm loại dịch vụ"}
           </h3>
@@ -217,7 +219,7 @@ export default function LoaiDichVuPage() {
               {saving ? "Đang lưu..." : "Lưu danh mục"}
             </button>
           </div>
-        </form>
+        </form>)}
       </div>
     </div>
   );

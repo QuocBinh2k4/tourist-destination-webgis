@@ -219,3 +219,47 @@ export async function getGapGrid(
   });
   return res.data;
 }
+
+
+export async function getAllLoaiHinh() {
+  const res = await api.get("/loai-hinh/all");
+  return res.data;
+}
+
+export async function createLoaiHinh(data) {
+  const res = await api.post("/loai-hinh", data);
+  return res.data;
+}
+
+export async function updateLoaiHinh(id, data) {
+  const res = await api.put(`/loai-hinh/${id}`, data);
+  return res.data;
+}
+
+export async function deactivateLoaiHinh(id) {
+  const res = await api.delete(`/loai-hinh/${id}`);
+  return res.data;
+}
+
+export async function login(username, password) {
+  const res = await api.post("/auth/login", {
+    username,
+    password
+  });
+  return res.data;
+}
+
+export async function getCurrentUser() {
+  const res = await api.get("/auth/me");
+  return res.data;
+}
+
+export async function getDiSan(params = {}) {
+  const response = await api.get("/di-san", { params });
+  return response.data;
+}
+
+export async function logout() {
+  const res = await api.post("/auth/logout");
+  return res.data;
+}
