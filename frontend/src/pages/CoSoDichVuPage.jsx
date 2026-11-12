@@ -54,6 +54,7 @@ export default function CoSoDichVuPage({ role }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("success");
 
   async function loadData() {
     setLoading(true);
@@ -70,6 +71,7 @@ export default function CoSoDichVuPage({ role }) {
       setItems(services.data);
       setCategories(types.data);
     } catch (error) {
+      setMessageType("error");
       setMessage(
         getApiError(error) || error.message
       );
@@ -145,6 +147,7 @@ export default function CoSoDichVuPage({ role }) {
       setFormOpen(true);
       setMessage("");
     } catch (error) {
+      setMessageType("error");
       setMessage(
         error.response?.data?.message ||
         error.message
@@ -184,6 +187,7 @@ export default function CoSoDichVuPage({ role }) {
       Math.abs(longitude) > 180 ||
       Math.abs(latitude) > 90
     ) {
+      setMessageType("error");
       setMessage("Kiểm tra mã, tên, nguồn dữ liệu và tọa độ.");
       return;
     }
@@ -216,8 +220,10 @@ export default function CoSoDichVuPage({ role }) {
 
       setFormOpen(false);
       await loadData();
+      setMessageType("success");
       setMessage("Đã lưu cơ sở dịch vụ thành công.");
     } catch (error) {
+      setMessageType("error");
       setMessage(
         error.response?.data?.errors?.join(". ") ||
         error.response?.data?.message ||
@@ -236,8 +242,10 @@ export default function CoSoDichVuPage({ role }) {
     try {
       await deleteCoSoDichVu(item.id);
       await loadData();
+      setMessageType("success");
       setMessage("Đã chuyển cơ sở sang ngừng hoạt động.");
     } catch (error) {
+      setMessageType("error");
       setMessage(
         error.response?.data?.message || error.message
       );
@@ -256,10 +264,10 @@ export default function CoSoDichVuPage({ role }) {
         </button>)}
       </div>
 
-      {message && (
-        <div className="p8-message" role="status">
+      {message && !(formOpen && messageType === "error") && (
+        <div className={"p8-message " + messageType} role={messageType === "error" ? "alert" : "status"}>
           {message}
-          <button onClick={() => setMessage("")}>×</button>
+          <button aria-label="Đóng thông báo" onClick={() => setMessage("")}>×</button>
         </div>
       )}
 
@@ -268,6 +276,7 @@ export default function CoSoDichVuPage({ role }) {
           <div className="p8-search">
             <Search size={18} />
             <input
+              aria-label="Tìm cơ sở dịch vụ"
               placeholder="Tìm mã, tên hoặc địa chỉ..."
               value={search}
               onChange={e => {
@@ -278,6 +287,7 @@ export default function CoSoDichVuPage({ role }) {
           </div>
 
           <select
+            aria-label="Lọc theo loại dịch vụ"
             value={categoryId}
             onChange={e => {
               setCategoryId(e.target.value);
@@ -293,6 +303,7 @@ export default function CoSoDichVuPage({ role }) {
           </select>
 
           <select
+            aria-label="Lọc theo trạng thái"
             value={status}
             onChange={e => {
               setStatus(e.target.value);
@@ -305,7 +316,7 @@ export default function CoSoDichVuPage({ role }) {
             ))}
           </select>
 
-          <button className="p8-secondary" onClick={loadData}>
+          <button className="p8-secondary" aria-label="Tải lại cơ sở dịch vụ" onClick={loadData}>
             <RefreshCw size={17} />
           </button>
         </div>
@@ -333,7 +344,7 @@ export default function CoSoDichVuPage({ role }) {
                     {(item.loai_dich_vu || [])
                       .map(x => x.ten).join(", ") || "Chưa phân loại"}
                   </td>
-                  <td>{statusText[item.trang_thai]}</td>
+                  <td><span className={"status-badge " + item.trang_thai}>{statusText[item.trang_thai] || "Chưa rõ"}</span></td>
                   <td>{item.dia_chi || "Chưa cập nhật"}</td>
                   <td>
                     {Number(item.latitude).toFixed(5)},{" "}
@@ -344,11 +355,12 @@ export default function CoSoDichVuPage({ role }) {
                       className="p8-secondary"
                       onClick={() => openEdit(item.id)}
                       title="Sửa"
+                      aria-label={"Sửa cơ sở " + item.ten}
                     >
                       <Pencil size={15} />
                     </button>)}{" "}
                     {canManage && (<button
-                      className="p8-secondary"
+                      className="p8-danger"
                       disabled={item.trang_thai === "ngung_hoat_dong"}
                       onClick={() => handleDeactivate(item)}
                     >
@@ -407,6 +419,7 @@ export default function CoSoDichVuPage({ role }) {
             </div>
 
             <div className="p8-form-body">
+              {message && messageType === "error" && <p className="p8-message error" role="alert">{message}</p>}
               <div className="p8-form-grid">
                 {[
                   ["ma", "Mã cơ sở *"],

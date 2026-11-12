@@ -75,6 +75,7 @@ app.use("/api/auth", authRoutes);
 
 // Từ đây, mọi API nghiệp vụ đều cần đăng nhập
 app.use("/api", requireAuth);
+app.use("/api/accounts", require("./routes/accountRoutes"));
 app.use("/api/di-san", require("./routes/diSanRoutes"));
 
 // API danh mục loại hình

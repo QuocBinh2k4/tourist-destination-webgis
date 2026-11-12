@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 
 import { getDashboardStats } from "../api/client";
+import StatCard from "../components/StatCard";
 import "../styles/phan8.css";
 
 function BarChart({ title, items, labelKey, valueKey }) {
@@ -117,22 +118,17 @@ export default function ThongKePage() {
         </button>
       </div>
 
-      {error && <div className="p8-message">{error}</div>}
+      {error && <div className="p8-message error" role="alert">{error}</div>}
 
       <div className="p8-stats-grid">
-        {cards.map(card => {
-          const Icon = card.icon;
-
-          return (
-            <div className="p8-stat" key={card.label}>
-              <Icon size={24} />
-              <strong>
-                {loading ? "..." : card.value ?? 0}
-              </strong>
-              <span>{card.label}</span>
-            </div>
-          );
-        })}
+        {cards.map((card, index) => <StatCard
+          key={card.label}
+          title={card.label}
+          value={loading ? "..." : card.value ?? 0}
+          icon={card.icon}
+          color={["blue", "green", "purple", "orange"][index]}
+          description="Dữ liệu hiện có trong hệ thống"
+        />)}
       </div>
 
       <div className="p8-two-columns">

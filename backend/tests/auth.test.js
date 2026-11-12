@@ -59,6 +59,11 @@ test("All three roles can inspect their authenticated session", async () => {
 });
 
 test("Viewers cannot write and editors cannot delete or manage categories", async () => {
+  for (const role of ["editor", "viewer"]) {
+    for (const method of ["GET", "POST", "PUT", "DELETE"]) {
+      assert.equal((await request("/accounts" + (["PUT", "DELETE"].includes(method) ? "/2" : ""), method, role, undefined, method === "POST" || method === "PUT" ? {} : undefined)).status, 403);
+    }
+  }
   for (const path of ["/diem-du-lich", "/co-so-dich-vu", "/loai-hinh", "/loai-dich-vu"]) {
     for (const method of ["POST", "PUT", "DELETE"]) {
       assert.equal((await request(path, method, "viewer", undefined, {})).status, 403);

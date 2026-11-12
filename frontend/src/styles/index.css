@@ -59,6 +59,7 @@ input:focus-visible {
 }
 
 .sidebar-brand {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -96,7 +97,7 @@ input:focus-visible {
 }
 
 .sidebar-section-label {
-  padding: 26px 22px 10px;
+  padding: 20px 14px 9px;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.1px;
@@ -106,9 +107,16 @@ input:focus-visible {
 .sidebar-menu {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 0 12px;
+  gap: 0;
+  padding: 0 12px 14px;
+  overflow-y: auto;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #426077 transparent;
 }
+
+.sidebar-group { display: flex; flex-direction: column; gap: 4px; }
+.sidebar-item svg { flex-shrink: 0; }
 
 .sidebar-item {
   width: 100%;
@@ -139,6 +147,7 @@ input:focus-visible {
 }
 
 .sidebar-bottom {
+  flex-shrink: 0;
   margin-top: auto;
   padding: 16px;
 }

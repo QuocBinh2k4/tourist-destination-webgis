@@ -25,6 +25,7 @@ export default function LoaiDichVuPage({ role }) {
   const [form, setForm] = useState(emptyForm);
   const [editId, setEditId] = useState(null);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("success");
   const [saving, setSaving] = useState(false);
 
   async function load() {
@@ -36,7 +37,7 @@ export default function LoaiDichVuPage({ role }) {
   }
 
   useEffect(() => {
-    load().catch(error => setMessage(error.message));
+    load().catch(error => { setMessageType("error"); setMessage(error.message); });
   }, []);
 
   function edit(item) {
@@ -69,8 +70,10 @@ export default function LoaiDichVuPage({ role }) {
 
       await load();
       reset();
+      setMessageType("success");
       setMessage("Lưu danh mục thành công.");
     } catch (error) {
+      setMessageType("error");
       setMessage(
         error.response?.data?.message ||
         error.response?.data?.errors?.join(". ") ||
@@ -89,8 +92,10 @@ export default function LoaiDichVuPage({ role }) {
     try {
       await deleteLoaiDichVu(item.id);
       await load();
+      setMessageType("success");
       setMessage("Đã ngừng sử dụng danh mục.");
     } catch (error) {
+      setMessageType("error");
       setMessage(
         error.response?.data?.message || error.message
       );
@@ -106,7 +111,7 @@ export default function LoaiDichVuPage({ role }) {
         </div>
       </div>
 
-      {message && <div className="p8-message">{message}</div>}
+      {message && <div className={"p8-message " + messageType} role={messageType === "error" ? "alert" : "status"}>{message}</div>}
 
       <div className={canManage ? "p8-two-columns" : ""}>
         <div className="p8-panel">
@@ -124,23 +129,27 @@ export default function LoaiDichVuPage({ role }) {
                 </tr>
               </thead>
               <tbody>
+                {items.length === 0 && <tr><td colSpan="5">Chưa có loại dịch vụ.</td></tr>}
                 {items.map(item => (
                   <tr key={item.id}>
-                    <td>{item.ma}</td>
+                    <td><span className="code-label">{item.ma}</span></td>
                     <td><strong>{item.ten}</strong></td>
                     <td>{item.so_co_so}</td>
                     <td>
-                      {item.is_active ? "Hoạt động" : "Ngừng"}
+                      <span className={"status-badge " + (item.is_active ? "dang_hoat_dong" : "ngung_hoat_dong")}>
+                        {item.is_active ? "Hoạt động" : "Ngừng sử dụng"}
+                      </span>
                     </td>
                     <td>
                       {canManage && (<button
                         className="p8-secondary"
                         onClick={() => edit(item)}
+                        aria-label={"Sửa loại dịch vụ " + item.ten}
                       >
                         <Pencil size={15} />
                       </button>)}{" "}
                       {canManage && (<button
-                        className="p8-secondary"
+                        className="p8-danger"
                         disabled={!item.is_active}
                         onClick={() => deactivate(item)}
                       >

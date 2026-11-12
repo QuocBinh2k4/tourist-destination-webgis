@@ -18,6 +18,7 @@ import LoaiHinhPage from "./pages/LoaiHinhPage";
 import DiSanPage from "./pages/DiSanPage";
 
 import LoginPage from "./pages/LoginPage";
+import AccountsPage from "./pages/AccountsPage";
 import {
   getCurrentUser,
   logout,
@@ -27,6 +28,7 @@ import {
 
 // Thông tin các trang
 const pageInfo = {
+  accounts: { title: "Tài khoản và phiên đăng nhập", subtitle: "Quản lý quyền truy cập hệ thống" },
   heritage: {
     title: "Di sản văn hóa Việt Nam",
     subtitle: "Tra cứu di sản theo phân loại của Cục Di sản văn hóa",
@@ -197,7 +199,7 @@ export default function App() {
     return (
       <div className="login-screen">
         <div className="login-card">
-          <p style={{ color: "white", margin: 0 }}>
+          <p role="status">
             Đang kiểm tra phiên đăng nhập...
           </p>
         </div>
@@ -223,6 +225,7 @@ export default function App() {
   return (
     <div className="app-layout">
       <Sidebar
+        role={currentUser.role}
         activePage={activePage}
         onChangePage={changePage}
         mobileOpen={mobileOpen}
@@ -248,8 +251,10 @@ export default function App() {
         />
 
         <main className="main-content">
-          {logoutError && <p role="alert">{logoutError}</p>}
-          {activePage === "dashboard" ? (
+          {logoutError && <p className="error-banner" role="alert">{logoutError}</p>}
+          {activePage === "accounts" ? (
+            <AccountsPage currentUser={currentUser} onSessionEnded={() => { setCurrentUser(null); setActivePage("dashboard"); }} />
+          ) : activePage === "dashboard" ? (
             <Dashboard
               destinations={destinations}
               categories={categories}

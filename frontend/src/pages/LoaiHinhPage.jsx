@@ -25,6 +25,7 @@ export default function LoaiHinhPage({ role }) {
   const [form, setForm] = useState(emptyForm);
   const [editId, setEditId] = useState(null);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("success");
   const [loading, setLoading] = useState(false);
 
   const load = useCallback(async () => {
@@ -34,6 +35,7 @@ export default function LoaiHinhPage({ role }) {
 
   useEffect(() => {
     load().catch(error => {
+      setMessageType("error");
       setMessage(getApiError(error));
     });
   }, [load]);
@@ -67,8 +69,10 @@ export default function LoaiHinhPage({ role }) {
 
       await load();
       reset();
+      setMessageType("success");
       setMessage("Lưu loại hình du lịch thành công.");
     } catch (error) {
+      setMessageType("error");
       setMessage(getApiError(error));
     } finally {
       setLoading(false);
@@ -83,8 +87,10 @@ export default function LoaiHinhPage({ role }) {
     try {
       await deactivateLoaiHinh(item.id);
       await load();
+      setMessageType("success");
       setMessage("Đã ngừng sử dụng loại hình.");
     } catch (error) {
+      setMessageType("error");
       setMessage(getApiError(error));
     }
   }
@@ -101,7 +107,7 @@ export default function LoaiHinhPage({ role }) {
       </div>
 
       {message && (
-        <div className="p8-message" role="status">
+        <div className={"p8-message " + messageType} role={messageType === "error" ? "alert" : "status"}>
           {message}
         </div>
       )}
@@ -127,16 +133,17 @@ export default function LoaiHinhPage({ role }) {
               </thead>
 
               <tbody>
+                {items.length === 0 && <tr><td colSpan="6">Chưa có loại hình du lịch.</td></tr>}
                 {items.map(item => (
                   <tr key={item.id}>
-                    <td>{item.ma}</td>
+                    <td><span className="code-label">{item.ma}</span></td>
                     <td><strong>{item.ten}</strong><p className="p8-note">{item.mo_ta}</p></td>
                     <td>{item.so_diem ?? 0}</td>
                     <td>{item.so_di_san ?? 0}</td>
                     <td>
-                      {item.is_active
-                        ? "Hoạt động"
-                        : "Ngừng sử dụng"}
+                      <span className={"status-badge " + (item.is_active ? "dang_hoat_dong" : "ngung_hoat_dong")}>
+                        {item.is_active ? "Hoạt động" : "Ngừng sử dụng"}
+                      </span>
                     </td>
                     <td>
                       {canManage && (<button
@@ -146,7 +153,7 @@ export default function LoaiHinhPage({ role }) {
                         Sửa
                       </button>)}{" "}
                       {canManage && (<button
-                        className="p8-secondary"
+                        className="p8-danger"
                         disabled={!item.is_active}
                         onClick={() => deactivate(item)}
                       >

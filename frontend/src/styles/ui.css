@@ -1,0 +1,205 @@
+/* Shared TourismGIS presentation. Loaded after module styles. */
+:root {
+  --ui-text: #172b43;
+  --ui-muted: #718397;
+  --ui-brand: #168d78;
+  --ui-brand-hover: #117662;
+  --ui-border: #e6edf3;
+  --ui-input-border: #dfe7ee;
+  --ui-soft: #f8fafc;
+  --ui-success: #16865d;
+  --ui-success-bg: #e8f8ef;
+  --ui-danger: #bb4545;
+  --ui-danger-bg: #fff0ee;
+  --ui-radius: 13px;
+  --ui-shadow: 0 5px 20px #172b4305;
+}
+
+select, textarea { font: inherit; }
+select:focus-visible, textarea:focus-visible, a:focus-visible, summary:focus-visible {
+  outline: 3px solid #85c8bb;
+  outline-offset: 2px;
+}
+input[type="checkbox"], input[type="radio"] { accent-color: var(--ui-brand); }
+button svg { flex-shrink: 0; }
+
+.main-layout, .main-content { min-width: 0; }
+.top-header { flex-wrap: wrap; }
+.header-left { min-width: 0; flex: 1 1 260px; }
+.header-actions { max-width: 100%; }
+.header-left h1, .header-left p { overflow-wrap: anywhere; }
+
+.dashboard-page, .destination-page, .heritage-page, .webgis-page,
+.analysis-page, .p8-page, .accounts-page { gap: 22px; }
+.dm-page-heading h2, .p8-heading h2, .webgis-page-heading h2, .analysis-heading h2 {
+  color: var(--ui-text);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+}
+.dm-page-heading p, .p8-heading p, .webgis-page-heading p, .analysis-heading p {
+  color: var(--ui-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.panel, .dm-panel, .p8-panel, .stat-card, .p8-stat,
+.webgis-tools, .webgis-map-panel, .analysis-control, .analysis-map-area,
+.analysis-results, .heritage-card, .heritage-group {
+  min-width: 0;
+  border-color: var(--ui-border);
+  border-radius: var(--ui-radius);
+  box-shadow: var(--ui-shadow);
+}
+.heritage-group.selected, .heritage-group:hover { border-color: var(--ui-brand); }
+.heritage-intro { background: linear-gradient(115deg, #153c52 0%, #176c72 65%, #229b83 100%); }
+.heritage-intro h2 { font-size: 26px; }
+
+.dm-btn, .p8-primary, .p8-secondary, .p8-danger, .analysis-run, .analysis-secondary,
+.heritage-reset, .heritage-map-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.dm-btn-primary, .p8-primary, .analysis-run {
+  color: white;
+  background: var(--ui-brand);
+  border: 1px solid var(--ui-brand);
+}
+.dm-btn-primary:hover:not(:disabled), .p8-primary:hover:not(:disabled), .analysis-run:hover:not(:disabled) {
+  background: var(--ui-brand-hover);
+  border-color: var(--ui-brand-hover);
+}
+.dm-btn-secondary, .p8-secondary, .analysis-secondary, .heritage-reset {
+  color: #52697e;
+  background: white;
+  border: 1px solid var(--ui-input-border);
+}
+.dm-btn-secondary:hover:not(:disabled), .p8-secondary:hover:not(:disabled),
+.analysis-secondary:hover:not(:disabled), .heritage-reset:hover:not(:disabled) { background: #f2f6f8; }
+.p8-danger { color: var(--ui-danger); background: white; border: 1px solid #f4d9d6; }
+.p8-danger:hover:not(:disabled) { background: var(--ui-danger-bg); }
+
+.dm-search, .p8-search, .heritage-search {
+  min-height: 42px;
+  border-color: var(--ui-input-border);
+  border-radius: 8px;
+  background: var(--ui-soft);
+  color: var(--ui-muted);
+}
+.dm-search input, .p8-search input, .heritage-search input { min-width: 0; color: var(--ui-text); font-size: 12px; }
+.dm-search:focus-within, .p8-search:focus-within, .heritage-search:focus-within {
+  outline: 3px solid #85c8bb;
+  outline-offset: 2px;
+}
+.dm-search input:focus-visible, .p8-search input:focus-visible, .heritage-search input:focus-visible { outline: none; }
+.p8-toolbar select, .dm-toolbar select, .heritage-filters select,
+.p8-pagination select, .dm-page-size select {
+  min-height: 40px;
+  max-width: 100%;
+  border-color: var(--ui-input-border);
+  border-radius: 8px;
+  color: #425b71;
+  font-size: 12px;
+}
+.dm-field input, .dm-field select, .dm-field textarea,
+.p8-form-grid input, .p8-form-grid select, .p8-inline-form input,
+.p8-inline-form select, .p8-inline-form textarea, .analysis-control input,
+.analysis-control select, .p8-gap-controls input, .p8-gap-controls select, .webgis-search {
+  min-height: 42px;
+  border-color: var(--ui-input-border);
+  border-radius: 8px;
+  font-size: 12px;
+}
+.p8-check-label input[type="checkbox"], .p8-check-grid input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  min-height: 0;
+  flex: 0 0 16px;
+  margin: 0;
+  padding: 0;
+}
+.p8-inline-form textarea { resize: vertical; }
+.p8-form-body > .p8-message { margin-bottom: 18px; }
+.code-label, .dm-code { background: #edf3fa; color: #2d648d; border-radius: 6px; padding: 6px 9px; font-size: 11px; font-weight: 700; }
+
+.data-table th, .dm-table th, .p8-table th, .analysis-table th {
+  padding: 15px 18px;
+  background: var(--ui-soft);
+  color: var(--ui-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+  border-bottom: 1px solid var(--ui-border);
+}
+.data-table td, .dm-table td, .p8-table td, .analysis-table td {
+  padding: 15px 18px;
+  color: #52697e;
+  font-size: 12px;
+  vertical-align: middle;
+  border-bottom: 1px solid #edf1f5;
+}
+.p8-table { min-width: 640px; }
+.data-table tbody tr:hover, .dm-table tbody tr:hover, .p8-table tbody tr:hover,
+.analysis-table tbody tr:hover { background: #f8fbfa; }
+.status-badge, .dm-status { padding: 6px 10px; border-radius: 7px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+.status-badge.dang_hoat_dong, .dm-status.dang_hoat_dong { color: var(--ui-success); background: var(--ui-success-bg); }
+.status-badge.ngung_hoat_dong, .dm-status.ngung_hoat_dong { color: var(--ui-danger); background: var(--ui-danger-bg); }
+.dm-empty, .empty-cell, .p8-table td[colspan] { padding: 35px 18px !important; text-align: center; color: var(--ui-muted) !important; }
+
+.dm-alert, .p8-message, .analysis-error, .error-banner {
+  border-radius: 9px;
+  padding: 13px 16px;
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.p8-message.error, .p8-message[role="alert"], .dm-alert.error, .analysis-error, .error-banner {
+  color: var(--ui-danger);
+  background: var(--ui-danger-bg);
+  border: 1px solid #f4ccca;
+}
+.p8-message button { color: inherit; }
+.p8-message { margin: 0; }
+.dm-pagination, .p8-pagination { flex-wrap: wrap; gap: 12px; padding: 16px 20px; color: var(--ui-muted); font-size: 12px; }
+.p8-pagination button { min-height: 34px; color: #52697e; }
+
+.form-modal, .p8-modal, .coordinate-picker, .account-dialog { border-radius: 15px; }
+.modal-overlay, .p8-overlay { background: #102538b3; }
+.form-modal-header, .p8-modal-header { padding: 20px 24px; }
+.form-modal-header h2, .p8-modal-header h3 { color: var(--ui-text); font-size: 18px; }
+.form-modal-footer, .p8-modal-footer { padding: 18px 24px; flex-wrap: wrap; }
+.p8-modal-header > button, .dm-icon-button { width: 36px; height: 36px; flex-shrink: 0; display: grid; place-items: center; border-radius: 8px; color: var(--ui-muted); }
+.p8-modal-header > button:hover, .dm-icon-button:hover { background: var(--ui-soft); }
+.form-modal-header, .form-modal-footer, .p8-modal-header, .p8-modal-footer { flex-shrink: 0; }
+
+@media (max-width: 650px) {
+  .dm-page-heading, .p8-heading, .webgis-page-heading { align-items: stretch; flex-direction: column; }
+  .dm-page-heading h2, .p8-heading h2, .webgis-page-heading h2, .analysis-heading h2 { font-size: 20px; }
+  .heritage-intro h2 { font-size: 21px; }
+  .dm-toolbar, .p8-toolbar { padding: 16px; }
+  .dm-search, .p8-search { min-width: 0; flex-basis: 100%; }
+  .dm-toolbar > select, .p8-toolbar > select { min-width: 0; flex: 1 1 140px; }
+  .dm-table-summary { flex-wrap: wrap; gap: 10px; }
+  .dm-page-controls, .dm-page-size { flex-wrap: wrap; }
+  .data-table th, .data-table td, .p8-table th, .p8-table td { padding: 14px; }
+  .analysis-tabs { grid-template-columns: 1fr; }
+  .access-result-heading { flex-wrap: wrap; }
+  .analysis-map-legend { gap: 10px; }
+  .form-modal-header, .form-modal-body, .form-modal-footer,
+  .p8-modal-header, .p8-form-body, .p8-modal-footer { padding-left: 16px; padding-right: 16px; }
+  .heritage-filters select { width: 100%; }
+  .heritage-filters > label { flex-basis: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin, .dm-spinning { animation: none; }
+  .sidebar, .chart-fill, .access-progress > div { transition: none; }
+}
