@@ -17,6 +17,8 @@ import ThieuDichVuPage from "./pages/ThieuDichVuPage";
 import LoaiHinhPage from "./pages/LoaiHinhPage";
 import DiSanPage from "./pages/DiSanPage";
 
+import HanhChinhPage from "./pages/HanhChinhPage";
+
 import LoginPage from "./pages/LoginPage";
 import AccountsPage from "./pages/AccountsPage";
 import {
@@ -48,6 +50,10 @@ const pageInfo = {
   services: {
     title: "Cơ sở dịch vụ",
     subtitle: "Quản lý các cơ sở phục vụ du lịch",
+  },
+  administration: {
+    title: "Ranh giới hành chính",
+    subtitle: "Quản lý, tra cứu tỉnh và xã/phường"
   },
   map: {
     title: "Bản đồ WebGIS",
@@ -270,7 +276,9 @@ export default function App() {
             <DiemDuLichPage onDataChanged={loadData} role={currentUser.role} />
           ) : activePage === "services" ? (
             <CoSoDichVuPage role={currentUser.role} />
-          ) : activePage === "service-types" ? (
+          ) : activePage === "administration" ? (
+            <HanhChinhPage />
+          ): activePage === "service-types" ? (
             <LoaiDichVuPage role={currentUser.role} />
           ) : activePage === "map" ? (
             <WebGISPage />

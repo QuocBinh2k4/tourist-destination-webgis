@@ -241,6 +241,27 @@ export async function deactivateLoaiHinh(id) {
   return res.data;
 }
 
+
+export async function getDanhSachTinh() {
+  const res = await api.get("/hanh-chinh/tinh");
+  return res.data;
+}
+
+export async function getXaTheoTinh(provinceId) {
+  const res = await api.get(
+    `/hanh-chinh/tinh/${provinceId}/xa`
+  );
+  return res.data;
+}
+
+export async function getDuLieuHanhChinh(areaId) {
+  const res = await api.get(
+    `/hanh-chinh/khu-vuc/${areaId}/du-lieu`
+  );
+  return res.data;
+}
+
+
 export async function login(username, password) {
   const res = await api.post("/auth/login", {
     username,

@@ -1,0 +1,148 @@
+
+.hc-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.hc-heading h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  color: #20394f;
+}
+
+.hc-heading p,
+.hc-note {
+  color: #7a8b9b;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.hc-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.hc-panel {
+  background: white;
+  border: 1px solid #e3eaf0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.hc-sidebar {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-self: start;
+}
+
+.hc-sidebar h3 {
+  color: #26425a;
+  font-size: 14px;
+  margin: 12px 0 2px;
+}
+
+.hc-sidebar label {
+  color: #536579;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.hc-sidebar select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #dae4eb;
+  border-radius: 8px;
+  color: #263c50;
+}
+
+.hc-sidebar .hc-check {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 400;
+}
+
+.hc-sidebar input[type="checkbox"] {
+  accent-color: #0d9488;
+}
+
+.hc-map-wrap {
+  min-width: 0;
+}
+
+.hc-map-wrap .leaflet-container {
+  z-index: 0;
+}
+
+.hc-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.hc-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 13px;
+  background: #edf8f4;
+  border-radius: 9px;
+}
+
+.hc-stats strong {
+  font-size: 24px;
+  color: #0f766e;
+}
+
+.hc-stats span {
+  font-size: 11px;
+  color: #617586;
+}
+
+.hc-error {
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff0ef;
+  color: #b42318;
+}
+
+.hc-tables {
+  padding: 20px;
+}
+
+.hc-tables h3 {
+  margin: 0 0 15px;
+  font-size: 15px;
+}
+
+.hc-table-scroll {
+  overflow-x: auto;
+}
+
+.hc-table-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.hc-table-scroll th,
+.hc-table-scroll td {
+  padding: 12px;
+  border-bottom: 1px solid #edf1f5;
+  font-size: 12px;
+}
+
+.hc-table-scroll th {
+  color: #617586;
+  background: #f8fafb;
+}
+
+@media (max-width: 1000px) {
+  .hc-layout {
+    grid-template-columns: 1fr;
+  }
+}

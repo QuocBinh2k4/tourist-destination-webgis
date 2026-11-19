@@ -25,6 +25,11 @@ const menuGroups = [
     { id: "services", label: "Cơ sở dịch vụ", icon: Building2 },
     { id: "categories", label: "Loại hình du lịch", icon: Tags },
     { id: "service-types", label: "Loại dịch vụ", icon: Tags },
+    {
+  id: "administration",
+  label: "Ranh giới hành chính",
+  icon: MapPinned
+},
   ] },
   { label: "BẢN ĐỒ VÀ PHÂN TÍCH", items: [
     { id: "map", label: "Bản đồ WebGIS", icon: Map },

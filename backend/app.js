@@ -29,6 +29,8 @@ const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 
+const hanhChinhRoutes = require("./routes/hanhChinhRoutes");
+
 const {
   requireAuth,
   allowRoles,
@@ -146,6 +148,8 @@ app.use("/api/map", mapRoutes);
 app.use("/api/analysis", phanTichRoutes);
 app.use("/api/stats", thongKeRoutes);
 app.use("/api/gaps", thieuDichVuRoutes);
+
+app.use("/api/hanh-chinh", hanhChinhRoutes);
 
 // API không tồn tại
 app.use((req, res) => {
